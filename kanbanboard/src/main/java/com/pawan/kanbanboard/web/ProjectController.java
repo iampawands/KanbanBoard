@@ -1,6 +1,7 @@
 package com.pawan.kanbanboard.web;
 
 import com.pawan.kanbanboard.domain.Project;
+import com.pawan.kanbanboard.exceptions.ProjectIdException;
 import com.pawan.kanbanboard.services.MapErrorValidationService;
 import com.pawan.kanbanboard.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,16 @@ public class ProjectController {
         Project project = projectService.findProjectByIdentifier(projectId);
         System.out.println(project);
         return new ResponseEntity<Project>(project,HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public Iterable<Project> getAllProjects(){
+        return projectService.findAllProjects();
+    }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<String> deleteProjectById(@PathVariable String projectId){
+         projectService.deleteProjectByIdentifier(projectId);
+        return new ResponseEntity<String>("Project with id : "+projectId+" deleted successfully",HttpStatus.OK);
     }
 }
